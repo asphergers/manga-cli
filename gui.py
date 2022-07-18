@@ -40,39 +40,43 @@ def gui_flip(pages: list()):
 
     root.mainloop();
 
-def gui_scroll(pages: list()):
-    image_arr = list();
-    root = Tk();
-    width = root.winfo_screenwidth();
-    height = root.winfo_screenheight(); 
+class Gui_Scroll:
+    def __init__(self, pages: list()):
+        self.pages = pages;
+        self.image_arr = list();
+        self.root = Tk();
+        self.width = self.root.winfo_screenwidth();
+        self.height = self.root.winfo_screenheight();
+        self.canvas = Canvas(self.root, bg="black", width = self.width, height = self.height);
+        self.canvas.pack();
 
-    canvas = Canvas(root, bg="Black", width=width, height=height);
-    canvas.pack();
+        self.build();
 
-    for page in pages:
-        image = page.image;
-        w, h = image.size;
-
-        image_arr.append([ImageTk.PhotoImage(image), h]);
-
-    y = 0;
-    for image in image_arr:
-        label = Label(canvas, image=image[0]);
-        canvas.create_window(width/2, y, anchor="n", window=label);
-        y += image[1];
+        self.root.mainloop();
     
-    scroll_bar = Scrollbar(canvas, orient="vertical", command=canvas.yview);
-    scroll_bar.place(relx=1, rely=0, relheight=1, anchor='ne');
-    canvas.config(yscrollcommand=scroll_bar.set, scrollregion=(0, 0, 0, y));
-    canvas.config(yscrollincrement=2);
+    def build(self):
+        for page in self.pages:
+            image = page.image;
+            w, h = image.size;
 
-    def scroll(speed):
-        canvas.yview_scroll(speed, "units");
+            self.image_arr.append([ImageTk.PhotoImage(image), h]);
+        
+        self.y = 0;
+        for image in self.image_arr:
+            print(image);
+            label = Label(self.canvas, image=image[0]);
+            self.canvas.create_window(self.width/2, self.y, anchor="n", window=label);
+            self.y += image[1];
+        
+        self.scroll_bar = Scrollbar(self.canvas, orient="vertical", command=self.canvas.yview);
+        self.scroll_bar.place(relx = 1, rely = 0, relheight= 1, anchor='ne');
+        self.canvas.config(yscrollcommand=self.scroll_bar.set, scrollregion=(0, 0, 0, self.y));
+        self.canvas.config(yscrollincrement=2);
 
-    root.bind("j", lambda event: scroll(20));
-    root.bind("k", lambda event: scroll(-20));
+        self.root.bind("j", lambda event: self.scroll(20));
+        self.root.bind("k", lambda event: self.scroll(-20));
 
-
-
-    root.mainloop();
+    
+    def scroll(self, speed):
+        self.canvas.yview_scroll(speed, "units");
 
