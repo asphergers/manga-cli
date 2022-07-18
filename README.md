@@ -19,5 +19,6 @@ Roadmap / Planned Features
   - next to no error handling
   - tacky built in command line
   - written in python
+  - on dwm (and possibly other linux window managers / desktop enviroments) a multi monitor setup will cause the default window size to account for the combined resolution of both monitors and the user will have to manually readjust
   - more to come (:
 #
