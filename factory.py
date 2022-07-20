@@ -32,7 +32,7 @@ def query(query):
         title = item.find('a', {"class" : "item-img bookmark_check"})['title'];
         href = item.find('a', {"class" : "item-img bookmark_check"})['href'];
         href = href[href.find("manga-"):]
-        print(href);
+
         chap_info = item.find('a', {"class" : "item-chapter"}) \
                 .text \
                 .split();
