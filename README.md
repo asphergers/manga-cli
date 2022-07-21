@@ -10,7 +10,7 @@ Roadmap / Planned Features
   - option for scrolling across a chapter instead of page flipping (O)
   - migration from manganelo to mangafreak (X)
   - better cli features, mainly flags and a help menu (X)
-  - smooth scrolling (X)
+  - smooth scrolling (O)
 #
 
 # Known Issues
