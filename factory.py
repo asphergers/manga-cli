@@ -20,17 +20,17 @@ class Page:
 def query(query):
     entry_arr = list();
     query = query.replace(" ", "_");
-    response = requests.get(f"https://chapmanganelo.com/https://m.manganelo.com/search/story/{query}");
+#    response = requests.get(f"https://chapmanganelo.com/https://m.manganelo.com/search/story/{query}");
+    response = requests.get(f"https://ww5.manganelo.tv/search/{query}");
     soup = BeautifulSoup(response.content, 'html.parser');
     div = soup.find('div', {"class" : "container-main-left"}) \
             .find('div', {"class" : "panel-search-story"});
 
-
     items = div.findAll('div', {"class": "search-story-item"});
 
     for item in items:
-        title = item.find('a', {"class" : "item-img bookmark_check"})['title'];
-        href = item.find('a', {"class" : "item-img bookmark_check"})['href'];
+        title = item.find('a', {"class" : "item-img"})['title'];
+        href = item.find('a', {"class" : "item-img"})['href'];
         href = href[href.find("manga-"):]
 
         chap_info = item.find('a', {"class" : "item-chapter"}) \
@@ -51,7 +51,8 @@ def query(query):
 
 def get_pages(manga: Manga, chapter: int):
     pages = list();
-    url = f"https://chapmanganelo.com/{manga.link}/chapter-{chapter}";
+#    url = f"https://chapmanganelo.com/{manga.link}/chapter-{chapter}";
+    url = f"https://ww5.manganelo.tv/chapter/{manga.link}/chapter-{chapter}";
     print(url); 
     response = requests.get(url);
     
@@ -61,7 +62,10 @@ def get_pages(manga: Manga, chapter: int):
         .findAll('img');
 
     for page in div:
-        pages.append(page['src']);
+        try:
+            pages.append(page['src']);
+        except:
+            pages.append(page['data-src']);
 
     return pages;
 
@@ -75,12 +79,10 @@ def dump_pages(pages: list()):
         file.close();
         print(f"\r dumping pages {i}/{len(pages)}", end="");
 
-    return;
-
 def grab_images(pages: list(), start: int, end: int, images: list(), counter: list()):
-    header = {"Referer" : "http://readmanganato.com/"};
+#    header = {"Referer" : "http://readmanganato.com/"};
     for i in range(start, end):
-        response = requests.get(pages[i], headers=header);
+        response = requests.get(pages[i]);
         img = Image.open(BytesIO(response.content));
         counter[0] += 1;
         print(f"\r {counter[0]}/{len(pages)}", end="");
@@ -93,7 +95,7 @@ def grab_images(pages: list(), start: int, end: int, images: list(), counter: li
 def sort_pages(pages: list()):
     for i in range(len(pages)):
         for j in range(len(pages)-i-1):
-            if (pages[j].num > pages[j+1].num):
+            if pages[j].num > pages[j+1].num:
                 pages[j], pages[j+1] = pages[j+1], pages[j];
     
 
