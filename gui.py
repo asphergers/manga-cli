@@ -1,6 +1,6 @@
+import screeninfo;
 from PIL import Image, ImageTk;
-from itertools import cycle;
-from tkinter import Canvas, Frame, PhotoImage, Button, Tk, Label, Scrollbar, CENTER;
+from tkinter import Canvas, Frame, Tk, Label, Scrollbar;
 
 
 
@@ -45,8 +45,8 @@ class Gui_Scroll:
         self.pages = pages;
         self.image_arr = list();
         self.root = Tk();
-        self.width = self.root.winfo_screenwidth();
-        self.height = self.root.winfo_screenheight();
+        self.width = screeninfo.get_monitors()[0].width;
+        self.height = screeninfo.get_monitors()[0].height;
         self.canvas = Canvas(self.root, bg="black", width = self.width, height = self.height);
         self.canvas.pack();
 
@@ -63,7 +63,6 @@ class Gui_Scroll:
         
         self.y = 0;
         for image in self.image_arr:
-            print(image);
             label = Label(self.canvas, image=image[0]);
             self.canvas.create_window(self.width/2, self.y, anchor="n", window=label);
             self.y += image[1];
