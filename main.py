@@ -20,7 +20,7 @@ while True:
 
         pages = get_pages(manga, chapter);
         images = link_to_images(pages);
-        gui_scroll(images);
+        Gui_Scroll(images);
         print();
     
     if inp[0] == "exit":
