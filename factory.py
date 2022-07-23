@@ -19,7 +19,7 @@ class Page:
 
 def query(query):
     entry_arr = list();
-    query = query.replace(" ", "_");
+#    query = query.replace(" ", "_");
 #    response = requests.get(f"https://chapmanganelo.com/https://m.manganelo.com/search/story/{query}");
     response = requests.get(f"https://ww5.manganelo.tv/search/{query}");
     soup = BeautifulSoup(response.content, 'html.parser');
