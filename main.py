@@ -1,6 +1,28 @@
 from factory import *
 from gui import *
+from threading import Thread;
 import sys;
+
+
+def get_images(manga, chapter):
+    pages = get_pages(manga, chapter);
+    images = link_to_images(pages);
+
+    return images;
+
+def auto_next(manga, starting_chap, auto=False):
+    images = get_images(manga, starting_chap);
+    Gui_Scroll(images);
+    
+    if auto:
+        while True:
+            starting_chap += 1;
+            next_images = get_images(manga, starting_chap);
+            Gui_Scroll(next_images);
+            print();
+    else:
+        print();
+
 
 while True:
     inp = input("$ ").split(' ');
@@ -18,10 +40,9 @@ while True:
 
         chapter = int(input(f"choose chapter (1-{manga.chapters}): "));
 
-        pages = get_pages(manga, chapter);
-        images = link_to_images(pages);
-        Gui_Scroll(images);
-        print();
+        auto_next(manga, chapter, True);
     
     if inp[0] == "exit":
         sys.exit();
+
+
