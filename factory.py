@@ -19,8 +19,6 @@ class Page:
 
 def query(query):
     entry_arr = list();
-#    query = query.replace(" ", "_");
-#    response = requests.get(f"https://chapmanganelo.com/https://m.manganelo.com/search/story/{query}");
     response = requests.get(f"https://ww5.manganelo.tv/search/{query}");
     soup = BeautifulSoup(response.content, 'html.parser');
     div = soup.find('div', {"class" : "container-main-left"}) \
@@ -51,7 +49,6 @@ def query(query):
 
 def get_pages(manga: Manga, chapter: int):
     pages = list();
-#    url = f"https://chapmanganelo.com/{manga.link}/chapter-{chapter}";
     url = f"https://ww5.manganelo.tv/chapter/{manga.link}/chapter-{chapter}";
     print(url); 
     response = requests.get(url);
@@ -80,17 +77,16 @@ def dump_pages(pages: list()):
         print(f"\r dumping pages {i}/{len(pages)}", end="");
 
 def grab_images(pages: list(), start: int, end: int, images: list(), counter: list()):
-#    header = {"Referer" : "http://readmanganato.com/"};
     for i in range(start, end):
         response = requests.get(pages[i]);
         img = Image.open(BytesIO(response.content));
         counter[0] += 1;
         print(f"\r {counter[0]}/{len(pages)}", end="");
 
-        #print(f"\r getting image {i}/{end}", end="");
-
         page = Page(i, img);
         images.append(page);
+
+    print();
 
 def sort_pages(pages: list()):
     for i in range(len(pages)):
