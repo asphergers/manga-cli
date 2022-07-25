@@ -1,4 +1,5 @@
 import screeninfo;
+import math;
 from PIL import Image, ImageTk;
 from tkinter import Canvas, Frame, Tk, Label, Scrollbar;
 
@@ -58,6 +59,11 @@ class Gui_Scroll:
         for page in self.pages:
             image = page.image;
             w, h = image.size;
+
+            if w > self.width:
+                width_diff = (w - self.width) + (self.width // 20);
+                image = image.resize((w - width_diff, h - width_diff));
+                h = h - width_diff;
 
             self.image_arr.append([ImageTk.PhotoImage(image), h]);
         
