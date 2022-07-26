@@ -1,45 +1,7 @@
 import screeninfo;
-import math;
-from PIL import Image, ImageTk;
-from tkinter import Canvas, Frame, Tk, Label, Scrollbar;
+from PIL import ImageTk;
+from tkinter import Canvas, Tk, Label, Scrollbar;
 
-
-
-def gui_flip(pages: list()):
-
-    root = Tk();
-    root.resizable();
-
-
-    image_list = list();
-    index = 0;
-
-    for i in range(len(pages)):
-        w, h = pages[i].image.size;
-
-        diff = h - 1080;
-        new_h = h - diff;
-        new_w = w - diff;
-
-        new_page = ImageTk.PhotoImage(pages[i].image.resize((new_w, new_h), Image.ANTIALIAS));
-
-        image_list.append(new_page);
-
-    frame = Frame(root, width=230, height=200);
-    frame.pack();
-
-    label = Label(frame, image=image_list[index]);
-    label.pack();
-
-    def next():
-        nonlocal index;
-        index += 1;
-        label.config(image=image_list[index]);
-
-    root.bind("a", lambda event: next());
-
-
-    root.mainloop();
 
 class Gui_Scroll:
     def __init__(self, pages: list()):
