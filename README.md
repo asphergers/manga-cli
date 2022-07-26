@@ -1,7 +1,6 @@
 # Usage
-
 python3 ./main.py will bring you into a command line, input "search" and everything else is self explanatory.
-Roadmap / Planned Features
+
 #
 # Roadmap / Planned Features
 
