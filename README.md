@@ -5,17 +5,14 @@ Roadmap / Planned Features
 #
 # Roadmap / Planned Features
 
-  - preloading next chapter (X)
-  - better keybindings for moving between pages (X)
-  - option for scrolling across a chapter instead of page flipping (O)
-  - migration from manganelo to mangafreak (X)
+  - preloading next chapter (O)
+  - better keybindings for moving between pages (O)
   - better cli features, mainly flags and a help menu (X)
   - smooth scrolling (O)
 #
 
 # Known Issues
 
-  - trashy image resizing method
   - next to no error handling
   - tacky built in command line
   - written in python
