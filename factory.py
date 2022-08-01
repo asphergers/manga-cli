@@ -1,5 +1,4 @@
-import requests;
-import re;
+import requests; import re;
 from threading import Thread;
 from PIL import Image;
 from io import BytesIO;
@@ -15,7 +14,7 @@ class Manga:
 @dataclass
 class Page:
     num: int;
-    image: Image;
+    image: Image.Image;
 
 def query(query):
     entry_arr = list();
@@ -66,7 +65,7 @@ def get_pages(manga: Manga, chapter: int):
 
     return pages;
 
-def dump_pages(pages: list()):
+def dump_pages(pages: list[str]):
     header = {'Referer': 'https://readmanganato.com/'};
     
     for i in range(len(pages)):
@@ -76,7 +75,7 @@ def dump_pages(pages: list()):
         file.close();
         print(f"\r dumping pages {i}/{len(pages)}", end="");
 
-def grab_images(pages: list(), start: int, end: int, images: list(), counter: list()):
+def grab_images(pages: list[str], start: int, end: int, images: list[Page], counter: list[int]):
     for i in range(start, end):
         response = requests.get(pages[i]);
         img = Image.open(BytesIO(response.content));
@@ -86,16 +85,15 @@ def grab_images(pages: list(), start: int, end: int, images: list(), counter: li
         page = Page(i, img);
         images.append(page);
 
-    print();
 
-def sort_pages(pages: list()):
+def sort_pages(pages: list[Page]):
     for i in range(len(pages)):
         for j in range(len(pages)-i-1):
             if pages[j].num > pages[j+1].num:
                 pages[j], pages[j+1] = pages[j+1], pages[j];
     
 
-def link_to_images(pages: list()):
+def link_to_images(pages: list[str]):
     thread_arr, steps, images = list(), list(), list();
     threads = int(len(pages))//5;
     current = 0;
@@ -116,12 +114,9 @@ def link_to_images(pages: list()):
 
     for thread in thread_arr:
         thread.join();
+
+    print();
     
     sort_pages(images);
 
     return images;
-
-def show_pages(pages: list()):
-    for page in pages:
-        page.image.show(); 
-
