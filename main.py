@@ -1,10 +1,10 @@
-from factory import get_pages, link_to_images, query;
+from factory import get_pages, link_to_images, query, Manga;
 from gui import Gui_Scroll;
 import db;
 import sys;
 
 
-def get_images(manga, chapter):
+def get_images(manga: Manga, chapter: int):
     pages = get_pages(manga, chapter);
     images = link_to_images(pages);
 
@@ -16,7 +16,7 @@ def get_input(message: str):
     result = input(message);
     return result;
 
-def auto_next(manga, starting_chap, auto=False):
+def auto_next(manga: Manga, starting_chap: int, auto=False):
     if auto:
         while True:
             next_images = get_images(manga, starting_chap);
@@ -49,9 +49,9 @@ while True:
 
         reading_type = get_input("auto download next chapter?[y/n]");
 
-        if reading_type.toLower() == "y":
+        if reading_type.lower() == "y":
             auto_next(manga, chapter, True);
-        elif reading_type.toLower() == "n":
+        elif reading_type.lower() == "n":
             auto_next(manga, chapter, False);
         else:
             print("not a valid respone");
