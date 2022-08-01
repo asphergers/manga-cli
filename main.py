@@ -1,6 +1,6 @@
-from factory import *
-from gui import *
-from threading import Thread;
+from factory import get_pages, link_to_images, query;
+from gui import Gui_Scroll;
+import db;
 import sys;
 
 
@@ -10,17 +10,24 @@ def get_images(manga, chapter):
 
     return images;
 
+def get_input(message: str):
+    if message == "exit":
+        sys.exit();
+    result = input(message);
+    return result;
+
 def auto_next(manga, starting_chap, auto=False):
-    images = get_images(manga, starting_chap);
-    Gui_Scroll(images);
-    
     if auto:
         while True:
-            starting_chap += 1;
             next_images = get_images(manga, starting_chap);
+            db.update(manga.name, starting_chap);
             Gui_Scroll(next_images);
+            starting_chap +=1;
             print();
     else:
+        images = get_images(manga, starting_chap);
+        db.update(manga.name, starting_chap);
+        Gui_Scroll(images);
         print();
 
 
@@ -28,20 +35,34 @@ while True:
     inp = input("$ ").split(' ');
 
     if inp[0] == "search":
-        term = input("query: ");
+        term = get_input("query: ");
         mangas = query(f"{term}");
         print(f"showing results for {term}");
         for i in range(len(mangas)):
             print(f"{i+1}: {mangas[i].name} ({mangas[i].chapters})");
         
-        index = int(input("choose manga: "));
+        index = int(get_input("choose manga: "));
         manga = mangas[index-1]
         print(f"chose {manga.name} ({manga.chapters})");
 
-        chapter = int(input(f"choose chapter (1-{manga.chapters}): "));
+        chapter = int(get_input(f"choose chapter (1-{manga.chapters}): "));
 
-        auto_next(manga, chapter, True);
+        reading_type = get_input("auto download next chapter?[y/n]");
+
+        if reading_type.toLower() == "y":
+            auto_next(manga, chapter, True);
+        elif reading_type.toLower() == "n":
+            auto_next(manga, chapter, False);
+        else:
+            print("not a valid respone");
+            print("exiting");
+            sys.exit();
+
     
+
+    if inp[0] == "info":
+        print(db.get_db_raw())
+
     if inp[0] == "exit":
         sys.exit();
 
