@@ -1,6 +1,6 @@
 import os;
 import sqlite3;
-from factory import Manga;
+from tabulate import tabulate;
 
 
 if not os.path.exists("./manga.db"):
@@ -41,6 +41,9 @@ def get_db_raw():
     result = cur.fetchall();
     return result;
 
-update("temp", 3);
+def print_db():
+    results = get_db_raw();
+    
+    print(tabulate(results, headers = ["manga", "chp"], tablefmt="psql"));
 
 

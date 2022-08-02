@@ -13,6 +13,7 @@ def get_images(manga: Manga, chapter: int):
 def get_input(message: str):
     if message == "exit":
         sys.exit();
+
     result = input(message);
     return result;
 
@@ -45,7 +46,13 @@ while True:
         manga = mangas[index-1]
         print(f"chose {manga.name} ({manga.chapters})");
 
-        chapter = int(get_input(f"choose chapter (1-{manga.chapters}): "));
+        chapter = get_input(f"choose chapter (1-{manga.chapters}): ");
+
+        try:
+            chapter = int(chapter);
+        except ValueError:
+            print("not and int");
+            continue;
 
         reading_type = get_input("auto download next chapter?[y/n]");
 
@@ -61,7 +68,7 @@ while True:
     
 
     if inp[0] == "info":
-        print(db.get_db_raw())
+        db.print_db()
 
     if inp[0] == "exit":
         sys.exit();
