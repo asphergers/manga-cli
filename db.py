@@ -36,13 +36,21 @@ def update(manga_name: str, chapter: int):
 
     #cur.execute("""INSERT INTO manga VALUES()""");
 
+def search_by_name(search_term: str):
+    cur.execute(f"""SELECT * FROM manga WHERE name LIKE '%{search_term}%'""")
+
+    results = cur.fetchall();
+
+    print_db(results = results);
+
 def get_db_raw():
     cur.execute("SELECT * FROM manga");
     result = cur.fetchall();
     return result;
 
-def print_db():
-    results = get_db_raw();
+def print_db(results = None):
+    if not results:
+        results = get_db_raw();
     
     print(tabulate(results, headers = ["manga", "chp"], tablefmt="psql"));
 

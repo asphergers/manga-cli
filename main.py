@@ -3,6 +3,16 @@ from gui import Gui_Scroll;
 import db;
 import sys;
 
+def get_input(message: str, parent):
+
+    result = input(message);
+
+    if result == "root":
+        root();
+    elif result == "back":
+        parent();
+
+    return result;
 
 def get_images(manga: Manga, chapter: int):
     pages = get_pages(manga, chapter);
@@ -10,12 +20,6 @@ def get_images(manga: Manga, chapter: int):
 
     return images;
 
-def get_input(message: str):
-    if message == "exit":
-        sys.exit();
-
-    result = input(message);
-    return result;
 
 def auto_next(manga: Manga, starting_chap: int, auto=False):
     if auto:
@@ -32,45 +36,83 @@ def auto_next(manga: Manga, starting_chap: int, auto=False):
         print();
 
 
-while True:
-    inp = input("$ ").split(' ');
+def root():
+    print("welcome to manga_cli, enter the command 'help' for help");
+    while True:
+        inp = input("$ ");
 
-    if inp[0] == "search":
-        term = get_input("query: ");
-        mangas = query(f"{term}");
-        print(f"showing results for {term}");
-        for i in range(len(mangas)):
-            print(f"{i+1}: {mangas[i].name} ({mangas[i].chapters})");
-        
-        index = int(get_input("choose manga: "));
-        manga = mangas[index-1]
-        print(f"chose {manga.name} ({manga.chapters})");
-
-        chapter = get_input(f"choose chapter (1-{manga.chapters}): ");
-
-        try:
-            chapter = int(chapter);
-        except ValueError:
-            print("not and int");
-            continue;
-
-        reading_type = get_input("auto download next chapter?[y/n]");
-
-        if reading_type.lower() == "y":
-            auto_next(manga, chapter, True);
-        elif reading_type.lower() == "n":
-            auto_next(manga, chapter, False);
-        else:
-            print("not a valid respone");
-            print("exiting");
+        if inp == "search":
+            search_display();
+        if inp == "db":
+            db_display();
+        if inp == "exit":
             sys.exit();
 
-    
+# MANGA SEARCH SECTION
 
-    if inp[0] == "info":
-        db.print_db()
+def search_display():
+    search_term = get_input("query: ", root);
+    mangas = query(f"{search_term}");
 
-    if inp[0] == "exit":
-        sys.exit();
+    for i in range(len(mangas)):
+        print(f"{i+1}: {mangas[i].name} ({mangas[i].chapters})");
+
+    index = get_input("choose manga: ", root);
+
+    try:
+        index = int(index);
+    except ValueError:
+        print("not an int");
+        search_display();
+
+    chapter_select_display(int(index), mangas);
+
+def chapter_select_display(index: int, mangas: list[Manga]):
+    manga = mangas[index-1];
+
+    chapter = get_input(f"choose chapter (1 - {manga.chapters})", search_display);
+
+    try:
+        chapter = int(chapter);
+    except ValueError:
+        print("not an int");
+        chapter_select_display(index, mangas);
+
+    reading_type = get_input("auto download next chapter?[y/n]: ", search_display);
+
+    if reading_type[0].lower() == "y":
+        auto_next(manga, int(chapter), True);
+    elif reading_type[0].lower() == "n":
+        auto_next(manga, int(chapter), False);
+    else:
+        print("not a valid response");
+        chapter_select_display(index, mangas);
+
+    chapter_select_display(index, mangas);
 
 
+# HELP SECTION
+
+def help_display():
+    return;
+
+# DB SECTION
+
+def db_display():
+    print("Commands");
+    print("--------");
+    print("info - display the entire manga table");
+    print("search - find a manga by name");
+
+    while True:
+        command = get_input("Command: ", root);
+
+        if command == "info":
+            db.print_db();
+
+        if command == "search":
+            term = get_input("search term: ", db_display);
+
+            db.search_by_name(term);
+        
+root();
