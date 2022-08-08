@@ -14,5 +14,4 @@ python3 ./main.py will bring you into a command line, input "search" and everyth
 
   - next to no error handling
   - tacky built in command line
-  - written in python
 #
