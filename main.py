@@ -70,7 +70,7 @@ def search_display():
 def chapter_select_display(index: int, mangas: list[Manga]):
     manga = mangas[index-1];
 
-    chapter = get_input(f"choose chapter (1 - {manga.chapters})", search_display);
+    chapter = get_input(f"choose chapter (1 - {manga.chapters}): ", search_display);
 
     try:
         chapter = int(chapter);
