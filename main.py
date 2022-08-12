@@ -94,7 +94,7 @@ def chapter_select_display(index: int, mangas: list[Manga]):
 # HELP SECTION
 
 def help_display():
-    return;
+    print("coming soon");
 
 # DB SECTION
 
