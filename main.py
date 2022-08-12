@@ -94,7 +94,11 @@ def chapter_select_display(index: int, mangas: list[Manga]):
 # HELP SECTION
 
 def help_display():
-    print("coming soon");
+    print("Global Commands");
+    print("-"*20);
+    print("root - goes to the beginning of the tree");
+    print("exit - exits the program");
+    print("-"*20);
 
 # DB SECTION
 
