@@ -99,6 +99,11 @@ def help_display():
     print("root - goes to the beginning of the tree");
     print("exit - exits the program");
     print("-"*20);
+    print("Branching Commands");
+    print("-"*20);
+    print("search - search for a manga");
+    print("db - database branch");
+    print("-"*20);
 
 # DB SECTION
 
